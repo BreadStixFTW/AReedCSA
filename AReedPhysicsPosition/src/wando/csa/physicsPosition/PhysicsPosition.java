@@ -13,7 +13,7 @@ public class PhysicsPosition {
 		double initialVelocity = 15; // in meters per second
 		double rateOfAccel = 20; // in m/s^2
 		
-		double position = (initialPosition + initialVelocity) + (((1/2) * rateOfAccel) * (time * time));
+		double position = (initialPosition + initialVelocity) + (((1.0/2.0) * rateOfAccel) * (time * time));
 		
 		System.out.println("Position: " + position + " meters");
 	}

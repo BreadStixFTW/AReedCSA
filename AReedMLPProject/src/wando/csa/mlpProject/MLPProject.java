@@ -35,9 +35,8 @@ public class MLPProject {
 			else {
 				ret += distance(coordinates[i][0], coordinates[i][1], coordinates[i + 1][0], coordinates[i + 1][1]);
 			}
-			return ret;
 		}
-		return 0;
+		return ret;
 	}
 	
 	public static void main(String[] args) {

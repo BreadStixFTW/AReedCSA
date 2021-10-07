@@ -32,45 +32,74 @@ public class BattleProgram {
 		double modifier;
 		double damage;
 		double level, attack, defense, base, stab, hp;
-		double[] stats = new double[6];
+		double[] stats = new double[7];
 		
 		System.out.println("----------Damage----------");
 		System.out.println("Zebstrika used Thunderbolt!");
-		System.out.println("Trainer, what are your Arcanine's stats? Input each stat in order.");
-		System.out.println("Level:");
-		System.out.println("Attack:");
-		System.out.println("Defense:");
-		System.out.println("Base:");
-		System.out.println("STAB:");
-		System.out.println("HP:");
+		System.out.println("Trainer, what are your " + pokemonName + "'s stats? Input each stat in order.");
 		
+		System.out.println("Level:");
 		level = input.nextDouble();
+		
+		System.out.println("Attack:");
 		attack = input.nextDouble();
+		
+		System.out.println("Defense:");
 		defense = input.nextDouble();
+		
+		System.out.println("Base:");
 		base = input.nextDouble();
+		
+		System.out.println("STAB:");
 		stab = input.nextDouble();
+		
+		System.out.println("HP:");
 		hp = input.nextDouble();
 		
-		modifier = stab * ((Math.random() * 1.15) + 0.85);
+		modifier = stab * ((Math.random() * 0.15) + 0.85);
 		damage = ((((2 * level + 10) / 250) + (attack / defense)) * base + 2) * modifier;
 		
 		hp = hp - damage;
 		
 		System.out.println(pokemonName + " sustained " + damage + " points damage.");
-		System.out.println("HP, after damage, are now " + hp + ".");
+		System.out.println("HP, after damage, are now " + hp + ".\n");
 		
+		// these stats will be accessed in this order for the statsTable() method
 		stats[0] = level;
 		stats[1] = attack;
 		stats[2] = defense;
-		stats[3] = base;
-		stats[4] = stab;
-		stats[5] = hp;
+		stats[3] = hp;
 		
 		return stats;
 	}
 	
+	public static void statsTable(String pokemonName, double[] pokemonStats, String[] pokemonMoves) {
+		System.out.println("----------Stats----------");
+		System.out.println("Name:     " + pokemonName);
+		System.out.println("Level:     " + pokemonStats[0]);
+		System.out.println("------------------------------");
+		System.out.println("HP:     " + pokemonStats[3]);
+		System.out.println("ATTACK:     " + pokemonStats[1]);
+		System.out.println("DEFENSE:     " + pokemonStats[2]);
+		System.out.println("SP. ATK:     " + pokemonStats[4]);
+		System.out.println("SP. DEF:     " + pokemonStats[5]);
+		System.out.println("SPEED:     " + pokemonStats[6]);
+		System.out.println("------------------------------");
+		System.out.println("Moves Learned: " + pokemonMoves[0] + " " + pokemonMoves[1] + " " + pokemonMoves[2] + " " + pokemonMoves[3]);
+	}
+	
 	public static void main(String[] args) {
 		String pokemonName = battleStart();
-		double[] stats = damage(pokemonName);
+		double[] pokemonStats = damage(pokemonName);
+		
+		// extra stats for statsTable()
+		pokemonStats[4] = 121; // Alakazam's special attack
+		pokemonStats[5] = 81; // Alakazam's special defense
+		pokemonStats[6] = 107; // Alakazam's speed
+		
+		// for Alakazam:
+		String[] pokemonMoves = {"Thunder Wave", "Hidden Power", "Psycho Cut", "Recover"};
+		
+		statsTable(pokemonName, pokemonStats, pokemonMoves);
 	}
 }

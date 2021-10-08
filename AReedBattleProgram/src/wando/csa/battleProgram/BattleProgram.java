@@ -85,7 +85,7 @@ public class BattleProgram {
 		System.out.println("SP. DEF:     " + pokemonStats[5]);
 		System.out.println("SPEED:     " + pokemonStats[6]);
 		System.out.println("------------------------------");
-		System.out.println("Moves Learned: " + pokemonMoves[0] + " " + pokemonMoves[1] + " " + pokemonMoves[2] + " " + pokemonMoves[3]);
+		System.out.println("Moves Learned: " + pokemonMoves[0] + ", " + pokemonMoves[1] + ", " + pokemonMoves[2] + ", " + pokemonMoves[3]);
 	}
 	
 	public static void main(String[] args) {

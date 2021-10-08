@@ -24,6 +24,7 @@ public class BattleProgram {
 		System.out.println("You chose " + pokemonName + "!");
 		System.out.println("It's a Pokemon battle between " + pokemonName + " and Zebstrika! Go!\n");
 		
+		input.close();
 		return pokemonName;
 	}
 	
@@ -70,6 +71,7 @@ public class BattleProgram {
 		stats[2] = defense;
 		stats[3] = hp;
 		
+		input.close();
 		return stats;
 	}
 	

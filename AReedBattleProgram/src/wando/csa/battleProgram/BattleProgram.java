@@ -57,7 +57,7 @@ public class BattleProgram {
 		hp = input.nextDouble();
 		
 		modifier = stab * ((Math.random() * 0.15) + 0.85);
-		damage = ((((2 * level + 10) / 250) + (attack / defense)) * base + 2) * modifier;
+		damage = Math.floor(((((2 * level + 10) / 250) + (attack / defense)) * base + 2) * modifier);
 		
 		hp = Math.floor(hp - damage);
 		

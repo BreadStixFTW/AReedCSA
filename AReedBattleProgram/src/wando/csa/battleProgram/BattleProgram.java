@@ -59,7 +59,7 @@ public class BattleProgram {
 		modifier = stab * ((Math.random() * 0.15) + 0.85);
 		damage = ((((2 * level + 10) / 250) + (attack / defense)) * base + 2) * modifier;
 		
-		hp = hp - damage;
+		hp = Math.floor(hp - damage);
 		
 		System.out.println(pokemonName + " sustained " + damage + " points damage.");
 		System.out.println("HP, after damage, are now " + hp + ".\n");
@@ -96,6 +96,9 @@ public class BattleProgram {
 		pokemonStats[4] = 121; // Alakazam's special attack
 		pokemonStats[5] = 81; // Alakazam's special defense
 		pokemonStats[6] = 107; // Alakazam's speed
+		
+		// resetting Alakazam's health
+		pokemonStats[3] = 96;
 		
 		// for Alakazam:
 		String[] pokemonMoves = {"Thunder Wave", "Hidden Power", "Psycho Cut", "Recover"};

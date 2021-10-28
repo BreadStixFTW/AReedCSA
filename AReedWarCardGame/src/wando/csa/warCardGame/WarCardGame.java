@@ -11,13 +11,13 @@ import java.util.*;
 public class WarCardGame {
 	public static HashMap<String, Integer> newDeck() {
 		// hash map initialized at 52 because the size of a deck is 52 cards
-		HashMap<String, Integer> deck = new HashMap<String, Integer>(52);
+		HashMap<String, Integer> deck = new HashMap<String, Integer>();
 		// Random object initialized for retrieving random cards
 		Random card = new Random();
 		// integer for storing a card value 2-14 (14 is the ace, in war ace is higher than all other cards)
 		int cardNum;
 		// for loop for adding the cards to the deck
-		for (int i = 0; i < deck.size(); i++) {
+		for (int i = 0; i < 52; i++) {
 			cardNum = card.nextInt(13) + 2;
 			
 			switch (cardNum) {

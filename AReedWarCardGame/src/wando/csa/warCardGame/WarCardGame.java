@@ -10,11 +10,13 @@ import java.util.*;
 
 public class WarCardGame {
 	public HashMap<String, Integer> deck;
+	public ArrayList<ArrayList<String>> playerDecks;
 	public final String[] suits = {"Spades", "Clubs", "Hearts", "Diamonds"};
 	public final String[] cards = {"Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"};
 	
 	public WarCardGame() {
 		deck = newDeck();
+		playerDecks = playerDecks();
 	}
 	
 	// method that searches the suits of a specific card to see which ones haven't been instantiated
@@ -120,14 +122,62 @@ public class WarCardGame {
 		}
 		return newDeck;
 	}
+	
+	// method that splits the card deck into two decks, one for each player
+	public ArrayList<ArrayList<String>> playerDecks() {
+		ArrayList<ArrayList<String>> playerDecks = new ArrayList();
+		playerDecks.add(new ArrayList());
+		playerDecks.add(new ArrayList());
+		int count = 1;
+		
+		for (Map.Entry<String, Integer> m : deck.entrySet()) {
+			if (count <= 26) {
+				playerDecks.get(0).add(m.getKey());
+			}
+			else {
+				playerDecks.get(1).add(m.getKey());
+			}
+			count++;
+		}
+		return playerDecks;
+	}
+	
+	// method that determines the winner of the current card battle
+	public void battle() {
+		// checks if the value of the current cards in both player's decks equal each other
+		// by getting the value from the current card's name
+		// via using the current card's name as a key for the deck hash map
+		if (deck.get(playerDecks.get(0).get(playerDecks.get(0).size() - 1)) == deck.get(playerDecks.get(1).get(playerDecks.get(1).size() - 1))) {
+			// call war method
+		}
+		// if the current card of the first deck's value is greater than the other card's value,
+		// then the other card gets added to the bottom of the first deck
+		// and the other card also gets removed from the top of the second deck
+		else if (deck.get(playerDecks.get(0).get(playerDecks.get(0).size() - 1)) > deck.get(playerDecks.get(1).get(playerDecks.get(1).size() - 1))) {
+			playerDecks.get(0).add(playerDecks.get(1).get(playerDecks.get(1).size() - 1));
+			playerDecks.get(1).remove(playerDecks.get(1).size() - 1);
+		}
+	}
+	
 	public static void main(String[] args) {
 		// instantiate a new WarCardGame object
 		WarCardGame war = new WarCardGame();
 		
-		// test print to see if there are 52 different cards
-		for (Map.Entry<String, Integer> m : war.deck.entrySet()) {
-			System.out.println("Card: " + m.getKey() + " " + "Card Value: " + m.getValue());
+		// Scanner object for input that will stop when a user wants to flip a card
+		// and when a user wants to see the opponent's card flipped
+		Scanner input = new Scanner(System.in);
+		
+		// test print to see the player decks' cards
+		for (int i = 0; i < war.playerDecks.get(0).size(); i++) {
+			System.out.println(war.playerDecks.get(0).get(i));
 		}
-		System.out.println(war.deck.size());
+		
+		for (int i = 0; i < war.playerDecks.get(1).size(); i++) {
+			System.out.println(war.playerDecks.get(1).get(i));
+		}
+		
+		while (war.playerDecks.get(0).size() > 0 && war.playerDecks.get(1).size() > 0) {
+			
+		}
 	}
 }

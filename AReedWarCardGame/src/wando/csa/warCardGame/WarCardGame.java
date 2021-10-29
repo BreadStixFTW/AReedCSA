@@ -144,6 +144,8 @@ public class WarCardGame {
 	
 	// method that determines the winner of the current card battle
 	public void battle() {
+		// put print statements here that tell which current card each player has
+		
 		// checks if the value of the current cards in both player's decks equal each other
 		// by getting the value from the current card's name
 		// via using the current card's name as a key for the deck hash map
@@ -156,6 +158,14 @@ public class WarCardGame {
 		else if (deck.get(playerDecks.get(0).get(playerDecks.get(0).size() - 1)) > deck.get(playerDecks.get(1).get(playerDecks.get(1).size() - 1))) {
 			playerDecks.get(0).add(playerDecks.get(1).get(playerDecks.get(1).size() - 1));
 			playerDecks.get(1).remove(playerDecks.get(1).size() - 1);
+			
+			System.out.println("You won the " + playerDecks.get(0).get(playerDecks.get(0).size() - 1) + "!");
+		}
+		else {
+			playerDecks.get(1).add(playerDecks.get(0).get(playerDecks.get(0).size() - 1));
+			playerDecks.get(0).remove(playerDecks.get(0).size() - 1);
+			
+			System.out.println("You lost your " + playerDecks.get(1).get(playerDecks.get(1).size() - 1) + "!");
 		}
 	}
 	
@@ -168,16 +178,29 @@ public class WarCardGame {
 		Scanner input = new Scanner(System.in);
 		
 		// test print to see the player decks' cards
-		for (int i = 0; i < war.playerDecks.get(0).size(); i++) {
-			System.out.println(war.playerDecks.get(0).get(i));
-		}
-		
-		for (int i = 0; i < war.playerDecks.get(1).size(); i++) {
-			System.out.println(war.playerDecks.get(1).get(i));
-		}
-		
+//		for (int i = 0; i < war.playerDecks.get(0).size(); i++) {
+//			System.out.println(war.playerDecks.get(0).get(i));
+//		}
+//		
+//		for (int i = 0; i < war.playerDecks.get(1).size(); i++) {
+//			System.out.println(war.playerDecks.get(1).get(i));
+//		}
+		boolean decMade = false;
 		while (war.playerDecks.get(0).size() > 0 && war.playerDecks.get(1).size() > 0) {
+			System.out.println("You have " + war.playerDecks.get(0).size() + " cards.");
 			
+			System.out.println("Type \"flip\" to flip your card.");
+			String response = input.next();
+			do {
+				switch(response) {
+				case "input":
+					war.battle();
+					decMade = true;
+					break;
+				default:
+					
+				}
+			} while(!decMade);
 		}
 	}
 }

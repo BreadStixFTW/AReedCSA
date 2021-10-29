@@ -17,6 +17,8 @@ public class WarCardGame {
 		deck = newDeck();
 	}
 	
+	// method that searches the suits of a specific card to see which ones haven't been instantiated
+	// as new cards
 	public AbstractMap.SimpleEntry<String, Integer> searchSuits(HashMap<String, Integer> newDeck, String card, int cardNum) {
 		// iterates through the card suits to see if there is a card of the passed in type of card
 		// that does not have a version of one of the suits
@@ -31,18 +33,12 @@ public class WarCardGame {
 				return new AbstractMap.SimpleEntry<String, Integer>(card + " of " + suits[i], cardNum);
 			}
 		}
-		// if all of the other suits of the cards that was passed in were filled, then loop through the cards in front
-		// this is to avoid returning something like a null map entry
-		// and also to catch any missing cards at the end of newDeck()
-		for (int i = 0; i < cards.length; i++) {
-			if (card == cards[i] && i + 1 <= cards.length - 1) {
-					return searchSuits(newDeck, cards[i + 1], cardNum + 1);
-			}
-		}
-		// if all of the cards in front had their suits filled, then return a filled suit
+		// if all of the suits already have cards of the passed in card type,
+		// return an already instantiated card
 		return new AbstractMap.SimpleEntry<String, Integer>(card + " of " + suits[0], cardNum);
 	}
 	
+	// method that returns a new randomized deck
 	public HashMap<String, Integer> newDeck() {
 		// card is the random number generator, cardNum is the card value that will be added,
 		// newCard is a map entry that will store a new card, and cards is a String array
@@ -56,8 +52,9 @@ public class WarCardGame {
 		int cardNum;
 		// used to store the cards returned from searchSuits()
 		Map.Entry<String, Integer> newCard;
-		// for loop for adding the cards to the deck
-		for (int i = 0; i < 52; i++) {
+		// while loop for adding the cards to the deck
+		// keeps looping until all 52 cards are in the deck
+		while (newDeck.size() < 52) {
 			cardNum = card.nextInt(13) + 2;
 			
 			// switch statement with cases for values ranging from 2 - 14
@@ -120,15 +117,6 @@ public class WarCardGame {
 				newDeck.put("Two of Spades", 2);
 				break;
 			}
-		}
-		// catches any missing cards that did not get added to the deck
-		while (newDeck.size() < 52) {
-			// uses recursion to keep going until it finds a card
-			// if it finds a card, it adds the card to the deck
-			// will keep using recursion to find all of the cards
-			// until newDeck has 52 cards inside of it
-			newCard = searchSuits(newDeck, cards[0], 2);
-			newDeck.put(newCard.getKey(), newCard.getValue());
 		}
 		return newDeck;
 	}

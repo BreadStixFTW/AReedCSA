@@ -143,16 +143,26 @@ public class WarCardGame {
 	}
 	
 	public void war(int playerIndex, int opponentIndex, int currIt) {
+		if (playerIndex < 0 && opponentIndex < 0) {
+			if (playerIndex == 0 && opponentIndex == 0) {
+				
+			}
+		}
 		// if there are less than four cards left
-		if (playerIndex < 0) {
+		else if (playerIndex < 0) {
 			// if the last card of playerDeck equals the value of the opponentDeck's current card
 			if (deck.get(playerDeck.get(0)) == deck.get(opponentDeck.get(opponentIndex))) {
-				// goes through opponenentDeck's remaining cards until it reaches a card of a higher value than playerDeck's current card
+				// goes through opponentDeck's remaining cards until it reaches a card of a higher value than playerDeck's current card
 				for (int i = opponentIndex; i >= 0; i--) {
 					if (deck.get(opponentDeck.get(i)) > deck.get(playerDeck.get(0))) {
 						// adds winning card to bottom of opponentDeck
-						opponentDeck.add(0, opponentDeck.get(opponentIndex));
-						opponentDeck.remove(opponentIndex);
+						for (int n = opponentDeck.size() - 2; n >= opponentIndex; n--) {
+							opponentDeck.add(0, opponentDeck.get(n));
+							opponentDeck.remove(n);
+						}
+						
+						opponentDeck.add(0, opponentDeck.get(opponentDeck.size() - 1));
+						opponentDeck.remove(opponentDeck.size() - 1);
 						
 						// gives card from war, which is 4 cards time the number of wars in the war chain
 						// war chain is how many wars are in play, as they can be back-to-back
@@ -178,8 +188,13 @@ public class WarCardGame {
 				}
 			}
 			else {
-				opponentDeck.add(0, opponentDeck.get(opponentIndex));
-				opponentDeck.remove(opponentIndex);
+				for (int n = opponentDeck.size() - 2; n >= opponentIndex; n--) {
+					opponentDeck.add(0, opponentDeck.get(n));
+					opponentDeck.remove(n);
+				}
+				
+				opponentDeck.add(0, opponentDeck.get(opponentDeck.size() - 1));
+				opponentDeck.remove(opponentDeck.size() - 1);
 				
 				for (int i = playerIndex + (4 * currIt); i >= 0; i--) {
 					opponentDeck.add(0, playerDeck.get(i));
@@ -193,9 +208,11 @@ public class WarCardGame {
 				// goes through playerDeck's remaining cards until it reaches a card of a higher value than playerDeck's current card
 				for (int i = playerIndex; i >= 0; i--) {
 					if (deck.get(playerDeck.get(i)) > deck.get(opponentDeck.get(0))) {
-						// adds winning card to bottom of opponentDeck
-						playerDeck.add(0, playerDeck.get(playerIndex));
-						playerDeck.remove(playerIndex);
+						// adds winning cards to bottom of playerDeck
+						for (int n = playerDeck.size() - 2; n >= playerIndex; n--) {
+							playerDeck.add(0, playerDeck.get(n));
+							playerDeck.remove(n);
+						}
 									
 						// gives card from war, which is 4 cards time the number of wars in the war chain
 						// war chain is how many wars are in play, as they can be back-to-back
@@ -238,8 +255,11 @@ public class WarCardGame {
 			// if playerDeck's current card wins the war, playerDeck gets all of opponentDeck's cards that were
 			// for the war
 			else if (deck.get(playerDeck.get(playerIndex)) > deck.get(opponentDeck.get(opponentIndex))) {
-				playerDeck.add(0, playerDeck.get(playerIndex));
-				playerDeck.remove(playerIndex);
+				// 2nd card used as a temporary card so that indices aren't messed up for adding and removal
+				for (int i = playerDeck.size() - 2; i >= playerIndex; i--) {
+					playerDeck.add(0, playerDeck.get(i));
+					playerDeck.remove(i);
+				}
 				
 				for (int i = opponentIndex + (4 * currIt); i >= opponentIndex; i--) {
 					playerDeck.add(0, opponentDeck.get(i));
@@ -249,8 +269,11 @@ public class WarCardGame {
 			// if opponentDeck's current card wins the war, opponentDeck gets all of playerDeck's cards that were
 			// for the war
 			else {
-				opponentDeck.add(0, opponentDeck.get(opponentIndex));
-				opponentDeck.remove(opponentIndex);
+				// 2nd card used as a temporary card so that indices aren't messed up for adding and removal
+				for (int i = opponentDeck.size() - 2; i >= opponentIndex; i--) {
+					opponentDeck.add(0, opponentDeck.get(i));
+					opponentDeck.remove(i);
+				}
 				
 				for (int i = playerIndex + (4 * currIt); i >= playerIndex; i--) {
 					opponentDeck.add(0, playerDeck.get(i));
@@ -258,6 +281,23 @@ public class WarCardGame {
 				}
 			}
 		}
+	}
+	
+	public void warOutcome(ArrayList<String> winningDeck, ArrayList<String> losingDeck, int winningIndex, int losingIndex, int currIt) {
+		// TODO: Pass decks by reference somehow
+		for (int i = opponentDeck.size() - 2; i >= winningIndex; i--) {
+			winningDeck.add(0, opponentDeck.get(i));
+			winningDeck.remove(i);
+		}
+		
+		winningDeck.add(0, winningDeck.get(winningDeck.size() - 1));
+		winningDeck.remove(winningDeck.size() - 1);
+		
+		for (int i = losingIndex + (4 * currIt); i >= 0; i--) {
+			winningDeck.add(0, losingDeck.get(i));
+			losingDeck.remove(i);
+		}
+		
 	}
 	
 	public static void main(String[] args) {

@@ -63,13 +63,10 @@ public class WarCardGame {
 			// from the two card to the ace
 			cardNum = card.nextInt(13) + 2;
 			
-			System.out.println(cardNum);
-			
 			// adds a new card to the deck
 			newCard = searchSuits(newDeck, cards[cardNum - 2], cardNum);
 			newDeck.put(newCard.getKey(), newCard.getValue());
 		}
-		System.out.println(newDeck);
 		return newDeck;
 	}
 	
@@ -104,11 +101,8 @@ public class WarCardGame {
 		// via using the current card's name as a key for the deck hash map
 		if (deck.get(playerDeck.get(playerDeck.size() - 1)) == deck.get(opponentDeck.get(opponentDeck.size() - 1))) {
 			// passes in the 4th card from the top into the war method
-			war(playerDeck.size() - 5, opponentDeck.size() - 5, 1);
-			
-			for (String s : playerDeck) {
-				System.out.println(s);
-			}
+			System.out.println("A war has been started!");
+			war(playerDeck.size() - 5, opponentDeck.size() - 5);
 		}
 		// if the current card of the first deck's value is greater than the other card's value,
 		// then the card you won with first gets moved to the bottom of the first deck,
@@ -123,7 +117,7 @@ public class WarCardGame {
 			playerDeck.add(0, opponentDeck.get(opponentDeck.size() - 1));
 			opponentDeck.remove(opponentDeck.size() - 1);
 			
-			System.out.println("You won the " + playerDeck.get(0) + " from your opponent!");
+			System.out.println("You won the " + playerDeck.get(0) + " from your opponent! \n");
 		}
 		// if the current card of the first deck's value is less than the other card's value,
 		// then the card your opponent won with first gets moved to the bottom of the second deck,
@@ -138,166 +132,214 @@ public class WarCardGame {
 			opponentDeck.add(0, playerDeck.get(playerDeck.size() - 1));
 			playerDeck.remove(playerDeck.size() - 1);
 			
-			System.out.println("You lost your " + opponentDeck.get(0) + " to the opponent!");
+			System.out.println("You lost your " + opponentDeck.get(0) + " to the opponent! \n");
 		}
 	}
 	
-	public void war(int playerIndex, int opponentIndex, int currIt) {
-		if (playerIndex < 0 && opponentIndex < 0) {
-			if (playerIndex == 0 && opponentIndex == 0) {
-				
-			}
+	// method that has the control flow for the positions of the cards in the event of a war
+	// determines the outcome of the war
+	public void war(int playerIndex, int opponentIndex) {
+		// playerIndex and opponentIndex are the positions of their respectful decks' cards that will
+		// determine the victor of the war
+		
+		if (playerIndex >= 0) {
+			System.out.println("Your current deciding card for the war is the " + playerDeck.get(playerIndex));
 		}
-		// if there are less than four cards left
-		else if (playerIndex < 0) {
-			// if the last card of playerDeck equals the value of the opponentDeck's current card
-			if (deck.get(playerDeck.get(0)) == deck.get(opponentDeck.get(opponentIndex))) {
-				// goes through opponentDeck's remaining cards until it reaches a card of a higher value than playerDeck's current card
-				for (int i = opponentIndex; i >= 0; i--) {
-					if (deck.get(opponentDeck.get(i)) > deck.get(playerDeck.get(0))) {
-						// adds winning card to bottom of opponentDeck
-						for (int n = opponentDeck.size() - 2; n >= opponentIndex; n--) {
-							opponentDeck.add(0, opponentDeck.get(n));
-							opponentDeck.remove(n);
-						}
-						
-						opponentDeck.add(0, opponentDeck.get(opponentDeck.size() - 1));
-						opponentDeck.remove(opponentDeck.size() - 1);
-						
-						// gives card from war, which is 4 cards time the number of wars in the war chain
-						// war chain is how many wars are in play, as they can be back-to-back
-						for (int n = playerIndex + (4 * currIt); n >= 0; n--) {
-							opponentDeck.add(0, playerDeck.get(n));
-							playerDeck.remove(n);
-						}
-					}
-					// give playerDeck the win for opponentDeck not being able to win the war
-					// playerDeck only wins initial war cards
-					else if (i == 0 && deck.get(opponentDeck.get(i)) <= deck.get(playerDeck.get(0))) {
-						for (int n = opponentIndex + (4 * currIt); n >= opponentIndex; n--) {
-							playerDeck.add(0, opponentDeck.get(n));
-							opponentDeck.remove(n);
-						}
-					}
-				}
-			}
-			else if (deck.get(playerDeck.get(0)) > deck.get(opponentDeck.get(opponentIndex))) {
-				for (int i = opponentIndex + (4 * currIt); i >= opponentIndex; i--) {
-					playerDeck.add(0, opponentDeck.get(i));
-					opponentDeck.remove(i);
-				}
-			}
-			else {
-				for (int n = opponentDeck.size() - 2; n >= opponentIndex; n--) {
-					opponentDeck.add(0, opponentDeck.get(n));
-					opponentDeck.remove(n);
-				}
+		else {
+			System.out.println("Your current deciding card for the war is the " + playerDeck.get(0));
+		}
+		
+		if (opponentIndex >= 0) {
+			System.out.println("Your opponent's current deciding card for the war is the " + opponentDeck.get(opponentIndex));
+		}
+		else {
+			System.out.println("Your opponent's current deciding card for the war is the " + opponentDeck.get(opponentIndex));
+		}
+		
+		// checks whether the cards from both decks to that will determine the victor of the war are less than or equal to 0
+		// in position, and if they are, then it runs this code, which matters because it has to be checked under
+		// these conditions whether or not the war will continue, as if it tries it cannot because
+		// there will be no more cards to check the victor of the war
+		if (playerIndex <= 0 && opponentIndex <= 0) {
+			// if the same card is at the end of the deck for the war and those two cards are reached,
+			// then the war is a stale mate and the cards on the top of the players' decks
+			// are put on the bottom of their decks to make sure that the war doesn't repeat again
+			if (deck.get(playerDeck.get(0)) == deck.get(opponentDeck.get(0))) {
+				playerDeck.add(0, playerDeck.get(playerDeck.size() -1));
+				playerDeck.remove(playerDeck.size() - 1);
 				
-				opponentDeck.add(0, opponentDeck.get(opponentDeck.size() - 1));
+				opponentDeck.add(0, opponentDeck.get(opponentDeck.size() -1));
 				opponentDeck.remove(opponentDeck.size() - 1);
 				
-				for (int i = playerIndex + (4 * currIt); i >= 0; i--) {
-					opponentDeck.add(0, playerDeck.get(i));
-					playerDeck.remove(i);
-				}
+				System.out.println("War ended in a stalemate. \n");
 			}
-		}
-		else if (opponentIndex < 0) {
-			// if the last card of opponentDeck equals the value of the opponentDeck's current card
-			if (deck.get(opponentDeck.get(0)) == deck.get(playerDeck.get(playerIndex))) {
-				// goes through playerDeck's remaining cards until it reaches a card of a higher value than playerDeck's current card
-				for (int i = playerIndex; i >= 0; i--) {
-					if (deck.get(playerDeck.get(i)) > deck.get(opponentDeck.get(0))) {
-						// adds winning cards to bottom of playerDeck
-						for (int n = playerDeck.size() - 2; n >= playerIndex; n--) {
-							playerDeck.add(0, playerDeck.get(n));
-							playerDeck.remove(n);
-						}
-									
-						// gives card from war, which is 4 cards time the number of wars in the war chain
-						// war chain is how many wars are in play, as they can be back-to-back
-						for (int n = opponentIndex + (4 * currIt); n >= 0; n--) {
-							playerDeck.add(0, opponentDeck.get(n));
-							opponentDeck.remove(n);
-						}
-					}
-					// give opponentDeck the win for playerDeck not being able to win the war
-					// opponentDeck only wins initial war cards
-					else if (i == 0 && deck.get(playerDeck.get(i)) <= deck.get(opponentDeck.get(0))) {
-						for (int n = playerIndex + (4 * currIt); n >= playerIndex; n--) {
-							opponentDeck.add(0, playerDeck.get(n));
-							playerDeck.remove(n);
-						}
-					}
-				}
-			}
-			else if (deck.get(opponentDeck.get(0)) > deck.get(playerDeck.get(playerIndex))) {
-				for (int i = playerIndex + (4 * currIt); i >= playerIndex; i--) {
-					opponentDeck.add(0, playerDeck.get(i));
-					playerDeck.remove(i);
-				}
+			else if (deck.get(playerDeck.get(0)) > deck.get(opponentDeck.get(0))) {
+				System.out.println("You won the war! \n");
+				
+				warOutcome(true, playerIndex, opponentIndex);
 			}
 			else {
-				playerDeck.add(0, playerDeck.get(playerIndex));
-				playerDeck.remove(playerIndex);
+				System.out.println("You lost the war! \n");
 				
-				for (int i = opponentIndex + (4 * currIt); i >= 0; i--) {
-					playerDeck.add(0, opponentDeck.get(i));
-					opponentDeck.remove(i);
-				}
+				warOutcome(false, playerIndex, opponentIndex);
+			}
+		}
+		// checks whether the card from playerDeck that will determine the victor of the war is less than or equal to 0
+		// in position, and if it is, then it runs this code, which matters because it has to be checked under
+		// these conditions whether or not the war will continue, as if it tries it cannot because
+		// there will be no more cards to check the victor of the war
+		else if (playerIndex <= 0 && !(opponentIndex <= 0)) {
+			// if the same card is at the end of the deck for the war and those two cards are reached,
+			// then the war is a stale mate and the cards on the top of the players' decks
+			// are put on the bottom of their decks to make sure that the war doesn't repeat again
+			if (deck.get(playerDeck.get(0)) == deck.get(opponentDeck.get(opponentIndex))) {
+				playerDeck.add(0, playerDeck.get(playerDeck.size() -1));
+				playerDeck.remove(playerDeck.size() - 1);
+				
+				opponentDeck.add(0, opponentDeck.get(opponentDeck.size() -1));
+				opponentDeck.remove(opponentDeck.size() - 1);
+				
+				System.out.println("War ended in a stalemate. \n");
+			}
+			else if (deck.get(playerDeck.get(0)) > deck.get(opponentDeck.get(opponentIndex))) {
+				System.out.println("You won the war! \n");
+				
+				warOutcome(true, playerIndex, opponentIndex);
+			}
+			else {
+				System.out.println("You lost the war! \n");
+				
+				warOutcome(false, playerIndex, opponentIndex);
+			}
+		}
+		// checks whether the card from opponentDeck that will determine the victor of the war is less than or equal to 0
+		// in position, and if it is, then it runs this code, which matters because it has to be checked under
+		// these conditions whether or not the war will continue, as if it tries it cannot because
+		// there will be no more cards to check the victor of the war
+		else if (opponentIndex <= 0 && !(playerIndex <= 0)) {
+			// if the same card is at the end of the deck for the war and those two cards are reached,
+			// then the war is a stale mate and the cards on the top of the players' decks
+			// are put on the bottom of their decks to make sure that the war doesn't repeat again
+			if (deck.get(opponentDeck.get(0)) == deck.get(playerDeck.get(playerIndex))) {
+				playerDeck.add(0, playerDeck.get(playerDeck.size() -1));
+				playerDeck.remove(playerDeck.size() - 1);
+				
+				opponentDeck.add(0, opponentDeck.get(opponentDeck.size() -1));
+				opponentDeck.remove(opponentDeck.size() - 1);
+				
+				System.out.println("War ended in a stalemate. \n");
+			}
+			else if (deck.get(opponentDeck.get(0)) > deck.get(playerDeck.get(playerIndex))) {
+				System.out.println("You lost the war! \n");
+				
+				warOutcome(false, playerIndex, opponentIndex);
+			}
+			else {
+				System.out.println("You won the war! \n");
+				
+				warOutcome(true, playerIndex, opponentIndex);
 			}
 		}
 		else {
+			// if the cards that will determine the outcome of the war are the same,
+			// then another war will be added on top of the current war, which results in 
+			// the position of the next deciding cards being 4 cards ahead.
 			if (deck.get(playerDeck.get(playerIndex)) == deck.get(opponentDeck.get(opponentIndex))) {
-				// calls war method again
-				war(playerIndex - 4, opponentIndex - 4, currIt + 1);
-			}
-			// if playerDeck's current card wins the war, playerDeck gets all of opponentDeck's cards that were
-			// for the war
-			else if (deck.get(playerDeck.get(playerIndex)) > deck.get(opponentDeck.get(opponentIndex))) {
-				// 2nd card used as a temporary card so that indices aren't messed up for adding and removal
-				for (int i = playerDeck.size() - 2; i >= playerIndex; i--) {
-					playerDeck.add(0, playerDeck.get(i));
-					playerDeck.remove(i);
-				}
+				System.out.println("Another war has been started!");
 				
-				for (int i = opponentIndex + (4 * currIt); i >= opponentIndex; i--) {
+				war(playerIndex - 4, opponentIndex - 4);
+			}
+			else if (deck.get(playerDeck.get(playerIndex)) > deck.get(opponentDeck.get(opponentIndex))) {
+				System.out.println("You won the war! \n");
+				
+				warOutcome(true, playerIndex, opponentIndex);
+			}
+			else {
+				System.out.println("You lost the war! \n");
+				
+				warOutcome(false, playerIndex, opponentIndex);
+			}
+		}
+	}
+	
+	// method that changes the positions of the cards based off of the war outcome from war()
+	public void warOutcome(boolean isPlayerDeck, int playerIndex, int opponentIndex) {
+		// if playerDeck won
+		if (isPlayerDeck) {
+			if (playerIndex < 0) {
+				// adds all winning cards of playerDeck to the bottom of playerDeck
+				// if playerIndex < 0, then that means that there were not enough cards for
+				// a full war, so the for loop will just loop to the end of the deck
+				for (int i = playerDeck.size() - 1; i >= 0; i--) {
+					playerDeck.add(0, playerDeck.get(playerDeck.size() - 1));
+					playerDeck.remove(playerDeck.size() - 1);
+				}
+			}
+			else {
+				// adds all winning cards of playerDeck to the bottom of playerDeck
+				for (int i = playerDeck.size() - 1; i >= playerIndex; i--) {
+					playerDeck.add(0, playerDeck.get(playerDeck.size() - 1));
+					playerDeck.remove(playerDeck.size() - 1);
+				}
+			}
+			
+			// if opponentIndex was less then 0, then when counting down from the top card
+			// go to the end of the deck at index 0
+			// as there were not enough cards at the end of opponentDeck
+			// so opponentIndex got set past opponentDeck
+			if (opponentIndex < 0) {
+				// adds won cards to playerDeck
+				for (int i = opponentDeck.size() - 1; i >= 0; i--) {
 					playerDeck.add(0, opponentDeck.get(i));
 					opponentDeck.remove(i);
 				}
 			}
-			// if opponentDeck's current card wins the war, opponentDeck gets all of playerDeck's cards that were
-			// for the war
 			else {
-				// 2nd card used as a temporary card so that indices aren't messed up for adding and removal
-				for (int i = opponentDeck.size() - 2; i >= opponentIndex; i--) {
-					opponentDeck.add(0, opponentDeck.get(i));
+				// adds won cards to playerDeck
+				for (int i = opponentDeck.size() - 1; i >= opponentIndex; i--) {
+					playerDeck.add(0, opponentDeck.get(i));
 					opponentDeck.remove(i);
 				}
-				
-				for (int i = playerIndex + (4 * currIt); i >= playerIndex; i--) {
+			}
+		}
+		// if opponentDeck won
+		else {
+			if (opponentIndex < 0) {
+				// adds all winning cards of opponentDeck to the bottom of opponentDeck
+				// if playerIndex < 0, then that means that there were not enough cards for
+				// a full war, so the for loop will just loop to the end of the deck
+				for (int i = opponentDeck.size() - 1; i >= 0; i--) {
+					opponentDeck.add(0, opponentDeck.get(opponentDeck.size() - 1));
+					opponentDeck.remove(opponentDeck.size() - 1);
+				}
+			}
+			else {
+				// adds all winning cards of opponentDeck to the bottom of opponentDeck
+				for (int i = opponentDeck.size() - 1; i >= opponentIndex; i--) {
+					opponentDeck.add(0, opponentDeck.get(opponentDeck.size() - 1));
+					opponentDeck.remove(opponentDeck.size() - 1);
+				}
+			}
+			
+			// if playerIndex was less then 0, then when counting down from the top card
+			// go to the end of the deck at index 0
+			// as there were not enough cards at the end of playerDeck
+			// so playerIndex got set past playerDeck
+			if (playerIndex < 0) {
+				// adds won cards to opponentDeck
+				for (int i = playerDeck.size() - 1; i >= 0; i--) {
+					opponentDeck.add(0, playerDeck.get(i));
+					playerDeck.remove(i);
+				}
+			}
+			else {
+				// adds won cards to opponentDeck
+				for (int i = playerDeck.size() - 1; i >= playerIndex; i--) {
 					opponentDeck.add(0, playerDeck.get(i));
 					playerDeck.remove(i);
 				}
 			}
 		}
-	}
-	
-	public void warOutcome(ArrayList<String> winningDeck, ArrayList<String> losingDeck, int winningIndex, int losingIndex, int currIt) {
-		// TODO: Pass decks by reference somehow
-		for (int i = opponentDeck.size() - 2; i >= winningIndex; i--) {
-			winningDeck.add(0, opponentDeck.get(i));
-			winningDeck.remove(i);
-		}
-		
-		winningDeck.add(0, winningDeck.get(winningDeck.size() - 1));
-		winningDeck.remove(winningDeck.size() - 1);
-		
-		for (int i = losingIndex + (4 * currIt); i >= 0; i--) {
-			winningDeck.add(0, losingDeck.get(i));
-			losingDeck.remove(i);
-		}
-		
 	}
 	
 	public static void main(String[] args) {
@@ -307,19 +349,23 @@ public class WarCardGame {
 		// Scanner object for input that will stop when a user wants to flip a card
 		// and when a user wants to see the opponent's card flipped
 		Scanner input = new Scanner(System.in);
-		
-		// test print to see the player decks' cards
-//		for (int i = 0; i < war.playerDecks.get(0).size(); i++) {
-//			System.out.println(war.playerDecks.get(0).get(i));
-//		}
-//		
-//		for (int i = 0; i < war.playerDecks.get(1).size(); i++) {
-//			System.out.println(war.playerDecks.get(1).get(i));
-//		}
+	
 		boolean decMade = false;
 		
 		while (war.playerDeck.size() > 0 && war.opponentDeck.size() > 0) {
 			System.out.println("You have " + war.playerDeck.size() + " cards.");
+			
+			System.out.println("Your current cards from top to bottom of the deck are: ");
+			
+			for (int i = war.playerDeck.size() - 1; i >= 0; i--) {
+				System.out.print(war.playerDeck.get(i));
+				if (i > 0) {
+					System.out.print(", ");
+				}
+				else {
+					System.out.println("");
+				}
+			}
 			
 			System.out.println("Type \"flip\" to flip your card.");
 			String response = input.next();
@@ -333,6 +379,13 @@ public class WarCardGame {
 					System.out.println("Please enter \"flip\"");
 				}
 			} while(!decMade);
+		}
+		
+		if (war.opponentDeck.size() == 0) {
+			System.out.println("You won the war against your opponent! Yay!");
+		}
+		else {
+			System.out.println("You lost the war to your opponent! Try again next time.");
 		}
 	}
 }

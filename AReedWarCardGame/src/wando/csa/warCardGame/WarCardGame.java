@@ -89,6 +89,7 @@ public class WarCardGame {
 			}
 			count++;
 		}
+		Collections.shuffle(splitDeck);
 		return splitDeck;
 	}
 	
@@ -102,7 +103,12 @@ public class WarCardGame {
 		// by getting the value from the current card's name
 		// via using the current card's name as a key for the deck hash map
 		if (deck.get(playerDeck.get(playerDeck.size() - 1)) == deck.get(opponentDeck.get(opponentDeck.size() - 1))) {
-			// call war method
+			// passes in the 4th card from the top into the war method
+			war(playerDeck.size() - 5, opponentDeck.size() - 5, 1);
+			
+			for (String s : playerDeck) {
+				System.out.println(s);
+			}
 		}
 		// if the current card of the first deck's value is greater than the other card's value,
 		// then the card you won with first gets moved to the bottom of the first deck,
@@ -133,6 +139,124 @@ public class WarCardGame {
 			playerDeck.remove(playerDeck.size() - 1);
 			
 			System.out.println("You lost your " + opponentDeck.get(0) + " to the opponent!");
+		}
+	}
+	
+	public void war(int playerIndex, int opponentIndex, int currIt) {
+		// if there are less than four cards left
+		if (playerIndex < 0) {
+			// if the last card of playerDeck equals the value of the opponentDeck's current card
+			if (deck.get(playerDeck.get(0)) == deck.get(opponentDeck.get(opponentIndex))) {
+				// goes through opponenentDeck's remaining cards until it reaches a card of a higher value than playerDeck's current card
+				for (int i = opponentIndex; i >= 0; i--) {
+					if (deck.get(opponentDeck.get(i)) > deck.get(playerDeck.get(0))) {
+						// adds winning card to bottom of opponentDeck
+						opponentDeck.add(0, opponentDeck.get(opponentIndex));
+						opponentDeck.remove(opponentIndex);
+						
+						// gives card from war, which is 4 cards time the number of wars in the war chain
+						// war chain is how many wars are in play, as they can be back-to-back
+						for (int n = playerIndex + (4 * currIt); n >= 0; n--) {
+							opponentDeck.add(0, playerDeck.get(n));
+							playerDeck.remove(n);
+						}
+					}
+					// give playerDeck the win for opponentDeck not being able to win the war
+					// playerDeck only wins initial war cards
+					else if (i == 0 && deck.get(opponentDeck.get(i)) <= deck.get(playerDeck.get(0))) {
+						for (int n = opponentIndex + (4 * currIt); n >= opponentIndex; n--) {
+							playerDeck.add(0, opponentDeck.get(n));
+							opponentDeck.remove(n);
+						}
+					}
+				}
+			}
+			else if (deck.get(playerDeck.get(0)) > deck.get(opponentDeck.get(opponentIndex))) {
+				for (int i = opponentIndex + (4 * currIt); i >= opponentIndex; i--) {
+					playerDeck.add(0, opponentDeck.get(i));
+					opponentDeck.remove(i);
+				}
+			}
+			else {
+				opponentDeck.add(0, opponentDeck.get(opponentIndex));
+				opponentDeck.remove(opponentIndex);
+				
+				for (int i = playerIndex + (4 * currIt); i >= 0; i--) {
+					opponentDeck.add(0, playerDeck.get(i));
+					playerDeck.remove(i);
+				}
+			}
+		}
+		else if (opponentIndex < 0) {
+			// if the last card of opponentDeck equals the value of the opponentDeck's current card
+			if (deck.get(opponentDeck.get(0)) == deck.get(playerDeck.get(playerIndex))) {
+				// goes through playerDeck's remaining cards until it reaches a card of a higher value than playerDeck's current card
+				for (int i = playerIndex; i >= 0; i--) {
+					if (deck.get(playerDeck.get(i)) > deck.get(opponentDeck.get(0))) {
+						// adds winning card to bottom of opponentDeck
+						playerDeck.add(0, playerDeck.get(playerIndex));
+						playerDeck.remove(playerIndex);
+									
+						// gives card from war, which is 4 cards time the number of wars in the war chain
+						// war chain is how many wars are in play, as they can be back-to-back
+						for (int n = opponentIndex + (4 * currIt); n >= 0; n--) {
+							playerDeck.add(0, opponentDeck.get(n));
+							opponentDeck.remove(n);
+						}
+					}
+					// give opponentDeck the win for playerDeck not being able to win the war
+					// opponentDeck only wins initial war cards
+					else if (i == 0 && deck.get(playerDeck.get(i)) <= deck.get(opponentDeck.get(0))) {
+						for (int n = playerIndex + (4 * currIt); n >= playerIndex; n--) {
+							opponentDeck.add(0, playerDeck.get(n));
+							playerDeck.remove(n);
+						}
+					}
+				}
+			}
+			else if (deck.get(opponentDeck.get(0)) > deck.get(playerDeck.get(playerIndex))) {
+				for (int i = playerIndex + (4 * currIt); i >= playerIndex; i--) {
+					opponentDeck.add(0, playerDeck.get(i));
+					playerDeck.remove(i);
+				}
+			}
+			else {
+				playerDeck.add(0, playerDeck.get(playerIndex));
+				playerDeck.remove(playerIndex);
+				
+				for (int i = opponentIndex + (4 * currIt); i >= 0; i--) {
+					playerDeck.add(0, opponentDeck.get(i));
+					opponentDeck.remove(i);
+				}
+			}
+		}
+		else {
+			if (deck.get(playerDeck.get(playerIndex)) == deck.get(opponentDeck.get(opponentIndex))) {
+				// calls war method again
+				war(playerIndex - 4, opponentIndex - 4, currIt + 1);
+			}
+			// if playerDeck's current card wins the war, playerDeck gets all of opponentDeck's cards that were
+			// for the war
+			else if (deck.get(playerDeck.get(playerIndex)) > deck.get(opponentDeck.get(opponentIndex))) {
+				playerDeck.add(0, playerDeck.get(playerIndex));
+				playerDeck.remove(playerIndex);
+				
+				for (int i = opponentIndex + (4 * currIt); i >= opponentIndex; i--) {
+					playerDeck.add(0, opponentDeck.get(i));
+					opponentDeck.remove(i);
+				}
+			}
+			// if opponentDeck's current card wins the war, opponentDeck gets all of playerDeck's cards that were
+			// for the war
+			else {
+				opponentDeck.add(0, opponentDeck.get(opponentIndex));
+				opponentDeck.remove(opponentIndex);
+				
+				for (int i = playerIndex + (4 * currIt); i >= playerIndex; i--) {
+					opponentDeck.add(0, playerDeck.get(i));
+					playerDeck.remove(i);
+				}
+			}
 		}
 	}
 	

@@ -387,5 +387,6 @@ public class WarCardGame {
 		else {
 			System.out.println("You lost the war to your opponent! Try again next time.");
 		}
+		input.close();
 	}
 }

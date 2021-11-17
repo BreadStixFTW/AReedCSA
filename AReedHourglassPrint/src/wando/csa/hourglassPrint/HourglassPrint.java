@@ -1,6 +1,8 @@
 package wando.csa.hourglassPrint;
 
 public class HourglassPrint {
+	public static final char COLON = ':';
+	
 	public static void main(String[] args) {
 		System.out.println("|\"\"\"\"\"\"\"\"\"|");
 		for (int i = 1; i <= 7; i += 2) {
@@ -11,7 +13,7 @@ public class HourglassPrint {
 			System.out.print("\\");
 			
 			for (int j = 7; j >= i; j--) {
-				System.out.print(":");
+				System.out.print(COLON);
 			}
 			System.out.println("/");
 		}
@@ -24,7 +26,7 @@ public class HourglassPrint {
 			System.out.print("/");
 			
 			for (int j = 1; j <= i; j++) {
-				System.out.print(":");
+				System.out.print(COLON);
 			}
 			System.out.println("\\");
 		}

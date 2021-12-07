@@ -17,8 +17,8 @@ class Pokemon {
 		this.isFishing = isFishing;
 		this.isFighting = isFighting;
 		
-		if (hitPoints > 255) {
-			hitPoints = 255;
+		if (hitPoints > 254) {
+			hitPoints = 254;
 		}
 		
 		this.hitPoints = hitPoints;

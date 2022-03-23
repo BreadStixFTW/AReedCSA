@@ -7,10 +7,10 @@ public class Essay extends TestQuestion {
 	
 	public void readQuestion(Scanner input) {
 		this.blankLines = input.nextInt();
-		input.nextLine();
+		super.setQuestion(input.nextLine());
 	}
 	
 	public String toString() {
-		return "" + blankLines;
+		return blankLines + "\n" + super.toString();
 	}
 }

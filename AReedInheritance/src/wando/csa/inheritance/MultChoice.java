@@ -7,6 +7,7 @@ public class MultChoice extends TestQuestion {
 	
 	public void readQuestion(Scanner input) {
 		int choiceSize = input.nextInt();
+		input.nextLine();
 		super.setQuestion(input.nextLine());
 		
 		choices = new String[choiceSize];
@@ -20,12 +21,7 @@ public class MultChoice extends TestQuestion {
 		String ret = super.toString() + "\n";
 		
 		for (int i = 0; i < choices.length; i++) {
-			if (i == choices.length - 1) {
-				ret += choices[i];
-			}
-			else {
-				ret += choices[i] + "\n";
-			}
+			ret += (i + 1) + ". " + choices[i] + "\n";
 		}
 		
 		return ret;

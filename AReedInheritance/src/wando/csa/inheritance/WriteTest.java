@@ -2,7 +2,7 @@ package wando.csa.inheritance;
 
 import java.util.*;
 
-public class TestTest {
+public class WriteTest {
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
 		
@@ -31,3 +31,4 @@ public class TestTest {
 		}
 	}
 }
+

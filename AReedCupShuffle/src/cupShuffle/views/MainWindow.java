@@ -1,7 +1,6 @@
 package cupShuffle.views;
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -14,12 +13,19 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JLayeredPane;
 import javax.swing.JLabel;
 
+import cupShuffle.resources.*;
+import javax.swing.ImageIcon;
+
 public class MainWindow {
 	
 	private JFrame frame;
 	private JButton btnNewButton;
 	private JPanel startPanel;
 	private JPanel gamePanel;
+	private JLabel scoreLabel;
+	private JButton guessBtn1;
+	private JButton guessBtn2;
+	private JButton guessBtn3;
 
 	/**
 	 * Launch the application.
@@ -67,7 +73,7 @@ public class MainWindow {
 		);
 		
 		startPanel = new JPanel();
-		startPanel.setBounds(0, 0, 434, 260);
+		startPanel.setBounds(0, 0, 14, 12);
 		layeredPane.add(startPanel);
 		
 		btnNewButton = new JButton("Start!");
@@ -93,14 +99,60 @@ public class MainWindow {
 		gamePanel.setVisible(false);
 		gamePanel.setBounds(0, 0, 434, 260);
 		layeredPane.add(gamePanel);
+		
+		scoreLabel = new JLabel("Score: 0");
+		
+		guessBtn1 = new JButton("Guess!");
+		guessBtn1.setVisible(false);
+		
+		guessBtn2 = new JButton("Guess!");
+		guessBtn2.setVisible(false);
+		
+		guessBtn3 = new JButton("Guess!");
+		guessBtn3.setVisible(false);
+		
+		JButton shuffleBtn = new JButton("Shuffle!");
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon(MainWindow.class.getResource("/cupShuffle/resources/cup.png")));
 		GroupLayout gl_gamePanel = new GroupLayout(gamePanel);
 		gl_gamePanel.setHorizontalGroup(
 			gl_gamePanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 434, Short.MAX_VALUE)
+				.addGroup(gl_gamePanel.createSequentialGroup()
+					.addContainerGap(357, Short.MAX_VALUE)
+					.addComponent(scoreLabel, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+				.addGroup(gl_gamePanel.createSequentialGroup()
+					.addGap(75)
+					.addComponent(guessBtn1)
+					.addGap(40)
+					.addComponent(guessBtn2)
+					.addGap(47)
+					.addComponent(guessBtn3)
+					.addContainerGap(83, Short.MAX_VALUE))
+				.addGroup(gl_gamePanel.createSequentialGroup()
+					.addGap(167)
+					.addComponent(shuffleBtn, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(185, Short.MAX_VALUE))
+				.addGroup(gl_gamePanel.createSequentialGroup()
+					.addGap(84)
+					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(241, Short.MAX_VALUE))
 		);
 		gl_gamePanel.setVerticalGroup(
 			gl_gamePanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 260, Short.MAX_VALUE)
+				.addGroup(gl_gamePanel.createSequentialGroup()
+					.addComponent(scoreLabel, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+					.addGap(43)
+					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 400, Short.MAX_VALUE)
+					.addGroup(gl_gamePanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(guessBtn2)
+						.addComponent(guessBtn1)
+						.addComponent(guessBtn3))
+					.addGap(18)
+					.addComponent(shuffleBtn)
+					.addGap(39))
 		);
 		gamePanel.setLayout(gl_gamePanel);
 		frame.getContentPane().setLayout(groupLayout);

@@ -32,8 +32,8 @@ public class MainWindow {
 	private JPanel gamePanel;
 	private JLabel scoreLabel;
 	private JButton guessBtn1;
-	private JButton guessBtn2;
 	private JButton guessBtn3;
+	private JButton guessBtn2;
 	private JLayeredPane layeredPane_1;
 	private JLabel cupImg1;
 	private JLabel cupImg2;
@@ -43,6 +43,32 @@ public class MainWindow {
 	private JLabel marbleImg3;
 	private JButton exitBtn;
 	private JButton shuffleBtn;
+	private JLabel successLabel;
+	
+	private Runnable showShuffleBtn;
+	private Runnable hideShuffleBtn;
+	private Runnable showExitBtn;
+	private Runnable hideExitBtn;
+	private Runnable showMarble1;
+	private Runnable hideMarble1;
+	private Runnable showMarble2;
+	private Runnable hideMarble2;
+	private Runnable showMarble3;
+	private Runnable hideMarble3;
+	private Runnable showGuessBtn1;
+	private Runnable hideGuessBtn1;
+	private Runnable showGuessBtn2;
+	private Runnable hideGuessBtn2;
+	private Runnable showGuessBtn3;
+	private Runnable hideGuessBtn3;
+	private Runnable marbleCupUp;
+	private Runnable marbleCupDown;
+	private Runnable allCupsUp;
+	private Runnable allCupsDown;
+	private Runnable successMsg;
+	private Runnable failMsg;
+	private Runnable clearMsg;
+	private Runnable updateScore;
 
 	/**
 	 * Launch the application.
@@ -65,6 +91,7 @@ public class MainWindow {
 	 */
 	public MainWindow() {
 		createComponents();
+		createFunctors();
 		createEvents();
 		
 		game = new Game();
@@ -131,20 +158,21 @@ public class MainWindow {
 				.addComponent(layeredPane_1, GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
 		);
 		
-		guessBtn3 = new JButton("Guess!");
-		guessBtn3.setBounds(178, 148, 63, 21);
-		layeredPane_1.add(guessBtn3);
-		
 		guessBtn2 = new JButton("Guess!");
-		guessBtn2.setBounds(285, 148, 63, 21);
+		guessBtn2.setBounds(147, 148, 128, 21);
 		layeredPane_1.add(guessBtn2);
 		
+		guessBtn3 = new JButton("Guess!");
+		guessBtn3.setBounds(285, 148, 139, 21);
+		layeredPane_1.add(guessBtn3);
+		
 		shuffleBtn = new JButton("Shuffle!");
+		shuffleBtn.setVisible(false);
 		shuffleBtn.setBounds(169, 197, 82, 21);
 		layeredPane_1.add(shuffleBtn);
 		
 		guessBtn1 = new JButton("Guess!");
-		guessBtn1.setBounds(74, 148, 63, 21);
+		guessBtn1.setBounds(10, 148, 127, 21);
 		layeredPane_1.add(guessBtn1);
 		
 		scoreLabel = new JLabel("Score: 0");
@@ -185,14 +213,169 @@ public class MainWindow {
 		layeredPane_1.add(marbleImg3);
 		
 		exitBtn = new JButton("Exit");
+		exitBtn.setVisible(false);
 		exitBtn.setBackground(Color.RED);
 		exitBtn.setBounds(349, 239, 85, 21);
 		layeredPane_1.add(exitBtn);
+		
+		successLabel = new JLabel("");
+		successLabel.setBounds(179, 229, 58, 14);
+		layeredPane_1.add(successLabel);
 		guessBtn1.setVisible(false);
-		guessBtn2.setVisible(false);
 		guessBtn3.setVisible(false);
+		guessBtn2.setVisible(false);
 		gamePanel.setLayout(gl_gamePanel);
 		frame.getContentPane().setLayout(groupLayout);
+	}
+	
+	private void createFunctors() {
+		showShuffleBtn = new Runnable() {
+			public void run() {
+				shuffleBtn.setVisible(true);
+			}
+		};
+		
+		hideShuffleBtn = new Runnable() {
+			public void run() {
+				shuffleBtn.setVisible(false);
+			}
+		};
+		
+		showExitBtn = new Runnable() {
+			public void run() {
+				exitBtn.setVisible(true);
+			}
+		};
+		
+		hideExitBtn = new Runnable() {
+			public void run() {
+				exitBtn.setVisible(false);
+			}
+		};
+		
+		showMarble1 = new Runnable() {
+			public void run() {
+				marbleImg1.setVisible(true);
+			}
+		};
+		
+		hideMarble1 = new Runnable() {
+			public void run() {
+				marbleImg1.setVisible(false);
+			}
+		};
+		
+		showMarble2 = new Runnable() {
+			public void run() {
+				marbleImg2.setVisible(true);
+			}
+		};
+		
+		hideMarble2 = new Runnable() {
+			public void run() {
+				marbleImg2.setVisible(false);
+			}
+		};
+		
+		showMarble3 = new Runnable() {
+			public void run() {
+				marbleImg3.setVisible(true);
+			}
+		};
+		
+		hideMarble3 = new Runnable() {
+			public void run() {
+				marbleImg3.setVisible(false);
+			}
+		};
+		
+		showGuessBtn1 = new Runnable() {
+			public void run() {
+				guessBtn1.setVisible(true);
+			}
+		};
+		
+		hideGuessBtn1 = new Runnable() {
+			public void run() {
+				guessBtn1.setVisible(false);
+			}
+		};
+		
+		showGuessBtn2 = new Runnable() {
+			public void run() {
+				guessBtn3.setVisible(true);
+			}
+		};
+		
+		hideGuessBtn2 = new Runnable() {
+			public void run() {
+				guessBtn3.setVisible(false);
+			}
+		};
+		
+		showGuessBtn3 = new Runnable() {
+			public void run() {
+				guessBtn2.setVisible(true);
+			}
+		};
+		
+		hideGuessBtn3 = new Runnable() {
+			public void run() {
+				guessBtn2.setVisible(false);
+			}
+		};
+		
+		marbleCupUp = new Runnable() {
+			public void run() {
+				cupImg2.setLocation(cupImg2.getX(), cupImg2.getY() - 1);
+			}
+		};
+		
+		marbleCupDown = new Runnable() {
+			public void run() {
+				cupImg2.setLocation(cupImg2.getX(), cupImg2.getY() + 1);
+			}
+		};
+		
+		allCupsUp = new Runnable() {
+			public void run() {
+				cupImg1.setLocation(cupImg1.getX(), cupImg1.getY() - 1);
+				cupImg2.setLocation(cupImg2.getX(), cupImg2.getY() - 1);
+				cupImg3.setLocation(cupImg3.getX(), cupImg3.getY() - 1);
+			}
+		};
+		
+		allCupsDown = new Runnable() {
+			public void run() {
+				cupImg1.setLocation(cupImg1.getX(), cupImg1.getY() + 1);
+				cupImg2.setLocation(cupImg2.getX(), cupImg2.getY() + 1);
+				cupImg3.setLocation(cupImg3.getX(), cupImg3.getY() + 1);
+			}
+		};
+		
+		successMsg = new Runnable() {
+			public void run() {
+				successLabel.setText("You Won!");
+			}
+		};
+		
+		failMsg = new Runnable() {
+			public void run() {
+				successLabel.setText("You Lost!");
+			}
+		};
+		
+		clearMsg = new Runnable() {
+			public void run() {
+				successLabel.setText("");
+			}
+		};
+		
+		updateScore = new Runnable() {
+			public void run() {
+				scoreLabel.setText("Score: " + game.getScore());
+			}
+		};
 	}
 	
 	private void createEvents() {
@@ -200,6 +383,9 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e) {
 				startPanel.setVisible(false);
 				gamePanel.setVisible(true);
+				
+				shuffleBtn.setVisible(true);
+				exitBtn.setVisible(true);
 			}
 		});
 		
@@ -207,6 +393,9 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e) {
 				gamePanel.setVisible(false);
 				startPanel.setVisible(true);
+				
+				shuffleBtn.setVisible(false);
+				exitBtn.setVisible(false);
 			}
 		});
 		
@@ -215,77 +404,239 @@ public class MainWindow {
 				shuffleCups();
 			}
 		});
+		
+		guessBtn1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showResult(1);
+			}
+		});
+		
+		guessBtn2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showResult(2);
+			}
+		});
+		
+		guessBtn3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showResult(3);
+			}
+		});
 	}
 	
 	public void shuffleCups() {
-		marbleImg2.setVisible(true);
-		
-		Runnable uiUpdate = new Runnable() {
-			public void run() {
-				System.out.println("Updating...");
-				
-				cupImg2.setLocation(cupImg2.getX(), 25);
-			}
-		};
-		
 		Thread uiThread = new Thread() {
 			public void run() {
 				try {
-					SwingUtilities.invokeAndWait(uiUpdate);
-				} catch (InvocationTargetException e) {
+					SwingUtilities.invokeAndWait(hideShuffleBtn);
+					
+					SwingUtilities.invokeAndWait(hideExitBtn);
+					
+					SwingUtilities.invokeAndWait(clearMsg);
+					
+					SwingUtilities.invokeAndWait(showMarble2);
+					
+					while (cupImg2.getY() > 10) {
+						SwingUtilities.invokeAndWait(marbleCupUp);
+						
+						waitMillis(50);
+					}
+					
+					while (cupImg2.getY() < 54) {
+						SwingUtilities.invokeAndWait(marbleCupDown);
+						
+						waitMillis(50);
+					}
+					
+					SwingUtilities.invokeAndWait(hideMarble2);
+					
+					for (int i = 0; i < 10; i++) {
+						int cupOne = (int) ((Math.random() * 3) + 1);
+						int cupTwo = (int) ((Math.random() * 3) + 1);
+						
+						while (cupTwo == cupOne) {
+							cupTwo = (int) ((Math.random() * 3) + 1);
+						}
+						
+						if (cupTwo < cupOne) {
+							int temp = cupOne;
+							cupOne = cupTwo;
+							cupTwo = temp;
+						}
+						
+						Runnable switchCups = null;
+						
+						JLabel labelOne = null;
+						JLabel labelTwo = null;
+						
+						int xOne = 0;
+						int xTwo = 0;
+						
+						if (cupOne == 1 && cupTwo == 2) {
+							xOne = cupImg1.getX();
+							xTwo = cupImg2.getX();
+							
+							labelOne = cupImg1;
+							labelTwo = cupImg2;
+							
+							switchCups = new Runnable() {
+								public void run() {
+									cupImg1.setLocation(cupImg1.getX() + 1, cupImg1.getY());
+									cupImg2.setLocation(cupImg2.getX() - 1, cupImg2.getY());
+								}
+							};
+						}
+						else if (cupOne == 1 && cupTwo == 3) {
+							xOne = cupImg1.getX();
+							xTwo = cupImg3.getX();
+							
+							labelOne = cupImg1;
+							labelTwo = cupImg3;
+							
+							switchCups = new Runnable() {
+								public void run() {
+									cupImg1.setLocation(cupImg1.getX() + 1, cupImg1.getY());
+									cupImg3.setLocation(cupImg3.getX() - 1, cupImg3.getY());
+								}
+							};
+						}
+						else if (cupOne == 2 && cupTwo == 3) {
+							xOne = cupImg2.getX();
+							xTwo = cupImg3.getX();
+							
+							labelOne = cupImg2;
+							labelTwo = cupImg3;
+							
+							switchCups = new Runnable() {
+								public void run() {
+									cupImg2.setLocation(cupImg2.getX() + 1, cupImg2.getY());
+									cupImg3.setLocation(cupImg3.getX() - 1, cupImg3.getY());
+								}
+							};
+						}
+						
+						while (labelOne.getX() < xTwo && labelTwo.getX() > xOne) {
+							SwingUtilities.invokeAndWait(switchCups);
+							
+							waitMillis(5);
+						}
+						
+						if (cupOne == 1 && cupTwo == 2) {
+							JLabel temp = cupImg1;
+							cupImg1 = cupImg2;
+							cupImg2 = temp;
+						}
+						else if (cupOne == 1 && cupTwo == 3) {
+							JLabel temp = cupImg1;
+							cupImg1 = cupImg3;
+							cupImg3 = temp;
+						}
+						else if (cupOne == 2 && cupTwo == 3) {
+							JLabel temp = cupImg2;
+							cupImg2 = cupImg3;
+							cupImg3 = temp;
+						}
+						
+						boolean[] cups = game.getCups();
+						
+						boolean temp = cups[cupOne - 1];
+						cups[cupOne - 1] = cups[cupTwo - 1];
+						cups[cupTwo - 1] = temp;
+					}
+					
+					SwingUtilities.invokeAndWait(showGuessBtn1);
+					SwingUtilities.invokeAndWait(showGuessBtn2);
+					SwingUtilities.invokeAndWait(showGuessBtn3);
+				} 
+				catch (InvocationTargetException e) {
 					e.printStackTrace();
-				} catch (InterruptedException e) {
+				} 
+				catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				
-				waitMillis(3000);
-				
-				System.out.println("Updated!");
 			}
 		};
 		
 		uiThread.start();
+	}
+	
+	public void showResult(int pos) {
+		Thread uiUpdate = new Thread() {
+			public void run() {
+				try {
+					SwingUtilities.invokeAndWait(hideGuessBtn1);
+					SwingUtilities.invokeAndWait(hideGuessBtn2);
+					SwingUtilities.invokeAndWait(hideGuessBtn3);
+					
+					boolean[] cups = game.getCups();
+					int cupPos = 0;
+					
+					for (int i = 0; i < cups.length; i++) {
+						if (cups[i]) {
+							cupPos = i + 1;
+						}
+					}
+					
+					if (cupPos == 1) {
+						SwingUtilities.invokeAndWait(showMarble1);
+					}
+					else if (cupPos == 2) {
+						SwingUtilities.invokeAndWait(showMarble2);
+					}
+					else if (cupPos == 3) {
+						SwingUtilities.invokeAndWait(showMarble3);
+					}
+					
+					if (pos == cupPos) {
+						SwingUtilities.invokeAndWait(successMsg);
+						
+						game.increaseScore();
+						
+						SwingUtilities.invokeAndWait(updateScore);
+					}
+					else {
+						SwingUtilities.invokeAndWait(failMsg);
+					}
+					
+					while (cupImg1.getY() > 10) {
+						SwingUtilities.invokeAndWait(allCupsUp);
+						
+						
+						waitMillis(50);
+					}
+					
+					while (cupImg1.getY() < 54) {
+						SwingUtilities.invokeAndWait(allCupsDown);
+						
+						waitMillis(50);
+					}
+					
+					if (cupPos == 1) {
+						SwingUtilities.invokeAndWait(hideMarble1);
+					}
+					else if (cupPos == 2) {
+						SwingUtilities.invokeAndWait(hideMarble2);
+					}
+					else if (cupPos == 3) {
+						SwingUtilities.invokeAndWait(hideMarble3);
+					}
+					
+					game.setCups(new boolean[]{false, true, false});
+					
+					SwingUtilities.invokeAndWait(showShuffleBtn);
+					
+					SwingUtilities.invokeAndWait(showExitBtn);
+				}
+				catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
+				catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		};
 		
-		try {
-			uiThread.join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-//		while (cupImg2.getY() > 25) {
-//			cupImg2.setLocation(cupImg2.getX(), cupImg2.getY() - 1);
-//			
-//			System.out.println("Test");
-//			
-//			waitMillis(1000);
-//		}
-//		
-//		while (cupImg2.getY() < 54) {
-//			cupImg2.setLocation(cupImg2.getX(), cupImg2.getY() + 1);
-//			
-//			waitMillis(1000);
-//		}
-		
-//		
-//		for (int i = 0; i < 10; i++) {
-//			int cupOne = (int) ((Math.random() * 3) + 1);
-//			int cupTwo = (int) ((Math.random() * 3) + 1);
-//			
-//			while (cupTwo == cupOne) {
-//				cupTwo = (int) ((Math.random() * 3) + 1);
-//			}
-//			
-//			JLabel labelOne = null;
-//			JLabel labelTwo = null;
-//			
-//			if (cupOne == 1) {
-//				labelOne = cupImg1;
-//			}
-//			else if (cupOne == 2) {
-//				labelTwo = cupImg2;
-//			}
-//		}
+		uiUpdate.start();
 	}
 	
 	public void waitMillis(long millis) {

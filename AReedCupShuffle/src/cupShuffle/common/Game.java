@@ -12,8 +12,12 @@ public class Game {
 		cups[2] = false;
 	}
 	
-	public void setScore(int score) {
-		this.score = score;
+	public void increaseScore() {
+		this.score++;
+	}
+	
+	public void setCups(boolean[] cups) {
+		this.cups = cups;
 	}
 	
 	public boolean[] getCups() {
